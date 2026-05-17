@@ -12,7 +12,7 @@ function getSocialConfig() {
     fbAppSecret: process.env.FACEBOOK_APP_SECRET,
     callbackUrl:
       process.env.FACEBOOK_OAUTH_CALLBACK_URL ||
-      "http://localhost:3500/api/social/auth/facebook/callback",
+      "https://ktsllp-leads-crm-backend.vercel.app//api/social/auth/facebook/callback",
     frontendUrl: process.env.CLIENT_URL || "http://localhost:3000",
   };
 }

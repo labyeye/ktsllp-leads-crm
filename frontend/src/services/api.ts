@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3500/api";
+const API_BASE = import.meta.env.VITE_API_URL || "https://ktsllp-leads-crm-backend.vercel.app//api";
 
 class ApiError extends Error {
   status: number;

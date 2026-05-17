@@ -57,7 +57,7 @@ router.get("/auth-url", protect, asyncHandler(async (req, res) => {
   }
 
   const redirectUri = process.env.FACEBOOK_REDIRECT_URI ||
-    `${process.env.API_BASE_URL || "http://localhost:3500"}/api/facebook/callback`;
+    `${process.env.API_BASE_URL || "https://ktsllp-leads-crm-backend.vercel.app/"}/api/facebook/callback`;
 
   const state = Buffer.from(`${req.user.tenantId || "global"}:${req.user._id}`).toString("base64");
 
@@ -89,7 +89,7 @@ router.get("/callback", asyncHandler(async (req, res) => {
   }
 
   const redirectUri = process.env.FACEBOOK_REDIRECT_URI ||
-    `${process.env.API_BASE_URL || "http://localhost:3500"}/api/facebook/callback`;
+    `${process.env.API_BASE_URL || "https://ktsllp-leads-crm-backend.vercel.app/"}/api/facebook/callback`;
 
   const tokenRes = await fetch(
     `${FB_API}/oauth/access_token?` +
@@ -240,6 +240,15 @@ router.post("/disconnect", protect, asyncHandler(async (req, res) => {
   );
   res.json({ success: true, message: "Facebook disconnected" });
 }));
+
+router.get("/webhook-debug", (_req, res) => {
+  const token = process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN;
+  res.json({
+    tokenSet: !!token,
+    tokenLength: token ? token.length : 0,
+    tokenPreview: token ? token.substring(0, 4) + "..." : null,
+  });
+});
 
 router.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
