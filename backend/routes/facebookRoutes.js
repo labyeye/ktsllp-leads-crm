@@ -241,12 +241,16 @@ router.post("/disconnect", protect, asyncHandler(async (req, res) => {
   res.json({ success: true, message: "Facebook disconnected" });
 }));
 
-router.get("/webhook-debug", (_req, res) => {
-  const token = process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN;
+router.get("/webhook-debug", (req, res) => {
+  const stored = process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN;
+  const incoming = req.query["hub.verify_token"];
   res.json({
-    tokenSet: !!token,
-    tokenLength: token ? token.length : 0,
-    tokenPreview: token ? token.substring(0, 4) + "..." : null,
+    tokenSet: !!stored,
+    storedLength: stored ? stored.length : 0,
+    storedPreview: stored ? stored.substring(0, 4) + "..." : null,
+    incomingToken: incoming || null,
+    incomingLength: incoming ? incoming.length : 0,
+    match: incoming === stored,
   });
 });
 
@@ -254,8 +258,11 @@ router.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
+  const stored = (process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN || "").trim();
 
-  if (mode === "subscribe" && token === process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN) {
+  console.log("[webhook]", JSON.stringify({ mode, token, stored, match: token === stored }));
+
+  if (mode === "subscribe" && token === stored) {
     return res.status(200).send(challenge);
   }
   res.sendStatus(403);
