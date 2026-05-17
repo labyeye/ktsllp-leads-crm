@@ -260,6 +260,7 @@ router.get("/webhook", (req, res) => {
   const challenge = req.query["hub.challenge"];
   const stored = (process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN || "").trim();
 
+  console.log("[webhook-raw-query]", JSON.stringify(req.query));
   console.log("[webhook]", JSON.stringify({ mode, token, stored, match: token === stored }));
 
   if (mode === "subscribe" && token === stored) {
