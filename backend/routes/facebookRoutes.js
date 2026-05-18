@@ -9,10 +9,8 @@ const User = require("../models/User");
 
 const FB_API = "https://graph.facebook.com/v20.0";
 const FB_SCOPES = [
-  "pages_show_list",
-  "leads_retrieval",
-  "pages_read_engagement",
-  "pages_manage_metadata",
+  "email",
+  "public_profile",
 ].join(",");
 
 async function fbGet(path, token, params = {}) {

@@ -415,12 +415,8 @@ exports.getFacebookAuthUrl = asyncHandler(async (req, res) => {
   }
 
   const scopes = [
-    "pages_manage_posts",
-    "pages_read_engagement",
-    "instagram_basic",
-    "instagram_content_publish",
+    "email",
     "public_profile",
-    "pages_show_list",
   ].join(",");
 
   const authUrl =
